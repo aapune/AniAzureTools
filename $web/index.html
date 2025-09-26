@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anitools Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0078d4;
+            --primary-dark: #005a9e;
+            --secondary: #2b88d8;
+            --text-dark: #333;
+            --text-light: #666;
+            --bg-light: #f5f5f5;
+            --white: #ffffff;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-light);
+            line-height: 1.6;
+            color: var(--text-dark);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        header {
+            background: linear-gradient(135deg, #005ea8, #003e6f);
+            color: var(--white);
+            padding: 1.5rem 0;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border-bottom: 4px solid #0099ff;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .app-card {
+            background-color: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .app-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .app-icon {
+            height: 120px;
+            background: linear-gradient(45deg, #f0f8ff, #e6f2ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--primary);
+        }
+
+        .app-info {
+            padding: 1.2rem;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .app-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.6rem;
+            color: var(--text-dark);
+        }
+
+        .app-description {
+            color: var(--text-light);
+            margin-bottom: 1.2rem;
+            line-height: 1.5;
+            flex-grow: 1;
+            font-size: 0.95rem;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: auto;
+        }
+
+        .app-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--primary);
+            color: var(--white);
+            text-decoration: none;
+            padding: 0.6rem 1.4rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+            min-width: 150px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 120, 212, 0.2);
+            font-size: 0.9rem;
+        }
+
+        .app-link:hover {
+            background-color: var(--primary-dark);
+            box-shadow: 0 6px 8px rgba(0, 120, 212, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .app-link i {
+            margin-left: 8px;
+        }
+
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            color: var(--text-light);
+            padding: 1rem 0;
+            border-top: 1px solid #e1e1e1;
+            font-size: 0.9rem;
+        }
+
+        .linkedin-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .linkedin-link:hover {
+            color: var(--primary-dark);
+        }
+
+        .linkedin-link i {
+            margin-right: 6px;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        /* Added for better UX */
+        .announcement {
+            background-color: #fff8e6;
+            border-left: 4px solid #ffb700;
+            padding: 0.75rem;
+            margin: 1.5rem 0 0;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+        
+        .announcement i {
+            color: #ffb700;
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .app-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container" style="max-width: 800px;">
+            <h1>Anitools Hub</h1>
+            <div class="subtitle">Azure Tools & Calculators</div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="announcement">
+            <i class="fas fa-info-circle"></i>
+            <div>
+                <strong>Welcome to Anitools Hub!</strong> A collection of useful tools for Azure developers and architects.
+            </div>
+        </div>
+        
+        <div class="app-grid">
+            <!-- Event Hubs Throughput Tool -->
+            <div class="app-card">
+                <div class="app-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="app-info">
+                    <h2 class="app-title">Event Hubs Throughput Calculator</h2>
+                    <p class="app-description">Calculate and optimize throughput capacity for Azure Event Hubs. Determine the right number of throughput units and partitions based on your expected message volume.</p>
+                    <div class="button-container">
+                        <a href="ehtu-index.html" class="app-link">Open Calculator <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Azure AI Search Advisor -->
+            <div class="app-card">
+                <div class="app-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="app-info">
+                    <h2 class="app-title">Azure AI Search Advisor</h2>
+                    <p class="app-description">Get recommendations and best practices for your Azure AI Search implementation. Optimize indexing, improve query performance, and enhance search relevance.</p>
+                    <div class="button-container">
+                        <a href="search-advisor-index.html" class="app-link">Launch Advisor <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Add a "Coming Soon" card -->
+            <div class="app-card">
+                <div class="app-icon">
+                    <i class="fas fa-clock pulse"></i>
+                </div>
+                <div class="app-info">
+                    <h2 class="app-title">More Tools Coming Soon</h2>
+                    <p class="app-description">We're working on additional Azure tools to help simplify your cloud development experience. Stay tuned for new calculators and advisors.</p>
+                    <div class="button-container">
+                        <a href="#" class="app-link" style="background-color: #888;">Coming Soon <i class="fas fa-hourglass-half"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>For feedback contact: <a href="https://www.linkedin.com/in/aniruddha-anikhindi" class="linkedin-link" target="_blank"><i class="fab fa-linkedin"></i> Aniruddha Anikhindi</a></p>
+        </div>
+    </footer>
+</body>
+</html>

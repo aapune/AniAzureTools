@@ -1,0 +1,311 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azure Event Hubs -  throughput calculation tool</title>
+</head>
+
+<script>
+function calculate_tu_ingress() {
+	var unitList = document.getElementById("unitList_ingress");
+	var unit = unitList.options[unitList.selectedIndex].text
+	var numunits = document.getElementById("usage_ingress").value
+	var valid = (numunits.match(/^-?\d*(\.\d+)?$/));
+
+	if(!valid){
+	  alert("Please enter valid throughput usage");
+	}
+
+	if(unit == 'MB'){
+	  var mb_in_bytes = numunits * Math.pow(1024, 2);
+	  document.getElementById("bytes_ingress").value = mb_in_bytes;
+	  var tu_required = (mb_in_bytes) / (1024 * 1024 * 60);
+      mbps = Math.round(tu_required);
+	  if(tu_required > 0 && tu_required <= 1 && mbps == 0)
+	  {
+		 mbps = 1
+	  } 
+	  document.getElementById("tu_ingress").value = mbps
+      document.getElementById("tuIngressRec").value = mbps
+	  document.getElementById("tuIngressEvents").value = 1000 * mbps
+	}
+
+	if(unit == 'GB'){
+	  var gb_in_bytes = 0
+	  gb_in_bytes = numunits * Math.pow(1024, 3);
+	  document.getElementById("bytes_ingress").value = gb_in_bytes;
+	  var tu_required = (gb_in_bytes) / (1024 * 1024 * 60);
+      mbps = Math.round(tu_required);
+	  if(tu_required > 0 && tu_required <= 1 && mbps == 0)
+	  {
+		 mbps = 1
+	  } 
+	  document.getElementById("tu_ingress").value = mbps
+      document.getElementById("tuIngressRec").value = mbps
+	  document.getElementById("tuIngressEvents").value = 1000 * mbps
+	}
+
+	if(unit == 'TB'){
+	  var tb_in_bytes = numunits * Math.pow(1024, 4);
+	  document.getElementById("bytes_ingress").value = tb_in_bytes 
+	  var tu_required = (tb_in_bytes) / (1024 * 1024 * 60)
+	  mbps = Math.round(tu_required)
+      if(tu_required > 0 && tu_required <= 1 && mbps == 0)
+	  {
+		 mbps = 1
+	  } 
+	  document.getElementById("tu_ingress").value = mbps
+      document.getElementById("tuIngressRec").value = mbps
+      document.getElementById("tuIngressEvents").value = 1000 * mbps
+	}
+}
+
+function calculate_tu_egress() {
+	var unitList = document.getElementById("unitList");
+	var unit = unitList.options[unitList.selectedIndex].text
+	var numunits = document.getElementById("usage_egress").value
+	var valid = (numunits.match(/^-?\d*(\.\d+)?$/));
+
+	if(!valid){
+	  alert("Please enter valid throughput usage");
+	}
+
+	if(unit == 'MB'){
+	  var mb_in_bytes = numunits * Math.pow(1024, 2);
+	  document.getElementById("bytes_egress").value = mb_in_bytes 
+	  var tu_required = (mb_in_bytes) / (1024 * 1024 * 60)
+      mbps = Math.round(tu_required)
+      egress_tu = Math.round(mbps/2)
+	  if(tu_required > 0 && tu_required <= 1 && mbps == 0)
+	  {
+		 mbps = 1
+		 egress_tu = 1
+	  } 
+	  document.getElementById("tu_egress").value = mbps
+      document.getElementById("tuEgressRec").value = egress_tu
+	  document.getElementById("tuEgressEvents").value = 4096 * mbps
+	}
+
+	if(unit == 'GB'){
+	  var gb_in_bytes = numunits * Math.pow(1024, 3);
+	  document.getElementById("bytes_egress").value = gb_in_bytes 
+	  var tu_required = (gb_in_bytes) / (1024 * 1024 * 60)
+      mbps = Math.round(tu_required)
+      egress_tu = Math.round(mbps/2)
+	  if(tu_required > 0 && tu_required <= 1 && mbps == 0)
+	  {
+		 mbps = 1
+		 egress_tu = 1
+	  } 
+	  document.getElementById("tu_egress").value = mbps
+      document.getElementById("tuEgressRec").value = egress_tu
+	  document.getElementById("tuEgressEvents").value = 4096 * mbps
+	}
+
+	if(unit == 'TB'){
+	  var tb_in_bytes = numunits * Math.pow(1024, 4);
+	  document.getElementById("bytes_egress").value = tb_in_bytes 
+	  var tu_required = (tb_in_bytes) / (1024 * 1024 * 60)
+	  mbps = Math.round(tu_required)
+      egress_tu = Math.round(mbps/2)
+	  if(tu_required > 0 && tu_required <= 1 && mbps == 0)
+	  {
+		 mbps = 1
+		 egress_tu = 1
+	  } 
+	  document.getElementById("tu_egress").value = mbps
+      document.getElementById("tuEgressRec").value = egress_tu
+	  document.getElementById("tuEgressEvents").value = 4096 * mbps
+	}
+}
+
+</script>
+
+<style>
+
+label{
+display:inline-block;
+width:200px;
+margin-right:10px;
+text-align:right;
+}
+
+
+
+		.header {
+            background-color: #0078d4;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+		   .back-link {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+		 .back-link:hover {
+            text-decoration: underline;
+        }
+        .back-icon {
+            margin-right: 5px;
+        }
+
+		.container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .intro {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+</style>
+
+<body>
+
+	<div class="header">
+        <h1>Azure Event Hubs -  throughput calculation tool</h1>
+        <a href="/index.html" class="back-link">
+            <span class="back-icon">←</span> Back to Ani Tools Hub
+        </a>
+    </div>
+<form>
+
+<h2> Microsoft Event Hubs -  throughput calculation </h2>
+
+
+
+<u>1 TU calculation:</u>
+<br>
+<ul>
+	<li>
+	Up to 1 MB per second of ingress events (events sent into an event hub), but no more than 1000 ingress events, management operations, or control API calls per second.
+	</li>
+	<li>
+	Up to 2 MB per second of egress events (events consumed from an event hub), but no more than 4096 egress events.
+	</li>
+	<li>
+	Up to 84 GB of event storage (enough for the default 1 hour retention period).
+	</li>
+</ul>
+
+<br>
+<br>
+
+<br>
+
+<b><u>Calculate Ingress:</u></b>
+<br>
+<br>
+ Select customer throughput usage (incoming per minute)
+<input type = "text" id = "usage_ingress" size = "20" onchange = "calculate_tu_ingress()" </p>
+<select id = "unitList_ingress" onchange = "calculate_tu_ingress()" >
+<option> --- Choose --- </option>
+<option> MB </option>
+<option> GB </option>
+<option> TB </option>
+
+</select>
+
+
+<br> 
+<br>
+
+<label for="txtByteName">Converted bytes:</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="txtBytes" size="20" id = "bytes_ingress" disabled=true>
+
+<br>
+<br>
+
+<label for="txtTU">MB per second (round off) :</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="txtTu_ingress" size="20" id = "tu_ingress" disabled=true>
+
+<br>
+<br>
+
+<label for="txtTU">Number of TU's recommended (Ingress) :</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="txtTuIngRec_ingress" size="20" id = "tuIngressRec" disabled=true>
+
+<br>
+<br>
+
+<label for="txtTU">Number of allowed events(Ingress) :</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="txtEvents_ingress" size="20" id = "tuIngressEvents" disabled=true>
+
+<br>
+<br>
+
+
+
+<br> 
+<br>
+
+<br>
+
+<br>
+<br>
+
+<br>
+<b><u>Calculate Egress:</u></b>
+<br>
+<br>
+ Select customer throughput usage (outgoing per minute)
+<input type = "text" id = "usage_egress" size = "20" onchange = "calculate_tu_egress()" </p>
+<select id = "unitList" onchange = "calculate_tu_egress()" >
+<option> --- Choose --- </option>
+<option> MB </option>
+<option> GB </option>
+<option> TB </option>
+
+</select>
+
+
+<br> 
+<br>
+
+<label for="txtByteName">Converted bytes:</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="txtBytes" size="20" id = "bytes_egress" disabled=true>
+
+<br>
+<br>
+
+<label for="txtTU">MB per second (round off) :</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="txtTu_egress" size="20" id = "tu_egress" disabled=true>
+
+
+<br>
+<br>
+
+<label for="txtTU">Number of TU's recommended (Egress) :</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="txtTuEgrRec_egress" size="20" id = "tuEgressRec" disabled=true>
+
+<br>
+<br>
+
+<label for="txtTU">Number of allowed events(Egress) :</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="txtEvents_egress" size="20" id = "tuEgressEvents" disabled=true>
+
+<br>
+<br>
+
+</form>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<!--<footer>
+  <small>Feedback: aanikhindi@microsoft.com</small>
+</footer> -->
+</body>
+</html>
+
+ 

@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azure Search Advisor - Ani Tools Hub</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+        .header {
+            background-color: #0078d4;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+        .back-link {
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .back-icon {
+            margin-right: 5px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .intro {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        .intro h2 {
+            color: #0078d4;
+            margin-top: 0;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #444;
+        }
+        select, input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .radio-group {
+            display: flex;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .radio-option {
+            margin-right: 2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        .radio-option input {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+        .checkbox-group {
+            margin-top: 0.5rem;
+        }
+        .checkbox-option {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        .checkbox-option input {
+            width: auto;
+            margin-right: 0.5rem;
+        }
+        button {
+            background-color: #0078d4;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.2s;
+        }
+        button:hover {
+            background-color: #006cbd;
+        }
+        .result {
+            margin-top: 2rem;
+            padding: 0;
+            display: none;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .card-header {
+            background-color: #0078d4;
+            color: white;
+            padding: 1rem 1.5rem;
+            font-weight: 600;
+        }
+        .card-body {
+            padding: 1.5rem;
+        }
+        .recommendation {
+            margin-bottom: 1rem;
+        }
+        .version-tag {
+            display: inline-block;
+            background: #107C10;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+        .warning {
+            color: #d83b01;
+            font-weight: bold;
+        }
+        .info {
+            color: #0078d4;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .replica-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        .replica-table th, .replica-table td {
+            border: 1px solid #ddd;
+            padding: 0.75rem;
+            text-align: left;
+        }
+        .replica-table th {
+            background-color: #f2f2f2;
+        }
+        .replica-info {
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            background-color: #f8f8f8;
+            padding: 1rem;
+            border-radius: 4px;
+        }
+        .feature-info {
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            background-color: #fff8e6;
+            padding: 1rem;
+            border-radius: 4px;
+            border-left: 4px solid #ff8c00;
+        }
+        .calculation-details {
+            font-family: monospace;
+            white-space: pre-wrap;
+            background-color: #f8f9fa;
+            padding: 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .pricing-note {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        .version-update {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Azure Search Advisor</h1>
+        <a href="/index.html" class="back-link">
+            <span class="back-icon">←</span> Back to Ani Tools Hub
+        </a>
+    </div>
+
+    <div class="container">
+        <div class="intro">
+            <h2>Azure Search Service Advisor <span class="version-tag">v1.1</span></h2>
+            <p>This tool helps you find the optimal Azure AI Search tier based on your storage, index, and vector search requirements. All recommendations are based on services created after April 3, 2024.</p>
+            <div class="version-update">
+                <strong>🆕 v1.1:</strong> Added AI Features cost calculation including Semantic Ranker pricing and enhanced cost breakdown analysis.
+            </div>
+            <div class="pricing-note">
+                <strong>✓ Updated Pricing:</strong> Pricing updated as of December 2024 from official Azure pricing page. Costs may vary by region.
+            </div>
+        </div>
+        
+        <form id="advisorForm">
+            <div class="form-group">
+                <label for="storage">Storage Requirements (GB):</label>
+                <input type="number" id="storage" min="0.1" step="0.1" value="10">
+            </div>
+            
+            <div class="form-group">
+                <label for="indexes">Number of Indexes:</label>
+                <input type="number" id="indexes" min="1" value="5">
+            </div>
+            
+            <div class="form-group">
+                <label for="vectorSearch">Vector Search:</label>
+                <select id="vectorSearch">
+                    <option value="none">None</option>
+                    <option value="light">Light (< 5GB)</option>
+                    <option value="medium">Medium (5-35GB)</option>
+                    <option value="heavy">Heavy (> 35GB)</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>Replica Configuration Priority:</label>
+                <div class="replica-info">
+                    Replicas affect availability, performance, and cost. More replicas provide higher query throughput and availability.
+                </div>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="replica-minimum" name="replicaConfig" value="minimum" checked>
+                        <label for="replica-minimum">Minimum Cost</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="replica-balanced" name="replicaConfig" value="balanced">
+                        <label for="replica-balanced">Balanced</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="replica-sla" name="replicaConfig" value="sla">
+                        <label for="replica-sla">Full SLA</label>
+                    </div>
+                </div>
+                <table class="replica-table">
+                    <tr>
+                        <th>Configuration</th>
+                        <th>Replicas</th>
+                        <th>Implications</th>
+                    </tr>
+                    <tr>
+                        <td>Minimum Cost</td>
+                        <td>1</td>
+                        <td>Lowest cost, no SLA, limited query performance</td>
+                    </tr>
+                    <tr>
+                        <td>Balanced</td>
+                        <td>2</td>
+                        <td>Moderate cost, read-only SLA, improved performance</td>
+                    </tr>
+                    <tr>
+                        <td>Full SLA</td>
+                        <td>3</td>
+                        <td>Higher cost, full SLA coverage, best performance</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="form-group">
+                <label>Additional AI Features:</label>
+                <div class="feature-info">
+                    <strong>Premium AI features</strong> available for Basic, Standard, and Storage-Optimized tiers. Select features you plan to use for accurate cost estimation.
+                </div>
+                <div class="checkbox-group">
+                    <div class="checkbox-option">
+                        <input type="checkbox" id="semantic-ranker" name="aiFeatures" value="semantic">
+                        <label for="semantic-ranker">Semantic Ranker - First 1,000 requests/month free, then $1/1,000 requests</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" id="semanticUsage" style="display: none;">
+                <label for="semanticRequests">Expected Semantic Ranker Requests per Month:</label>
+                <input type="number" id="semanticRequests" min="0" value="2000" placeholder="Enter monthly requests">
+            </div>
+            
+            <button type="button" onclick="generateRecommendation()">Generate Recommendation</button>
+        </form>
+        
+        <div id="result" class="result">
+            <div class="card">
+                <div class="card-header">Recommended Configuration</div>
+                <div class="card-body" id="tierRecommendation"></div>
+            </div>
+            
+            <div class="card" id="replicaOptionsCard" style="display: none;">
+                <div class="card-header">Replica Options</div>
+                <div class="card-body" id="replicaOptions"></div>
+            </div>
+
+            <div class="card" id="aiFeaturesCostCard" style="display: none;">
+                <div class="card-header">AI Features Cost Breakdown</div>
+                <div class="card-body" id="aiFeaturesCost"></div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">Service Information</div>
+                <div class="card-body" id="scalingAdvice"></div>
+            </div>
+            
+           <!--<div class="card">
+                <div class="card-header">Additional Recommendations</div>
+                <div class="card-body" id="additionalAdvice"></div>
+            </div>--> 
+            
+            <div class="card">
+                <div class="card-header">Calculation Details</div>
+                <div class="card-body">
+                    <div class="calculation-details" id="calculationDetail"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Azure Search Advisor v1.1 © 2025 - Part of Ani Tools Hub | Pricing updated from <a href="https://azure.microsoft.com/en-us/pricing/details/search/" target="_blank">Azure official pricing</a></p>
+        </div>
+    </div>
+
+    <script>
+        // Show/hide usage fields based on selected AI features
+        document.addEventListener('change', function(e) {
+            if (e.target.name === 'aiFeatures') {
+                const semanticUsage = document.getElementById('semanticUsage');
+                semanticUsage.style.display = document.getElementById('semantic-ranker').checked ? 'block' : 'none';
+            }
+        });
+
+        // Configuration with OFFICIAL Azure pricing (December 2024)
+        const config = {
+            "version": "1.1",
+            "vectorOptions": {
+                "none": 0,
+                "light": 5,
+                "medium": 35,
+                "heavy": 150
+            },
+            "replicaConfigs": {
+                "minimum": { name: "Minimum Cost", count: 1, sla: "No SLA" },
+                "balanced": { name: "Balanced", count: 2, sla: "Read-only operations SLA" },
+                "sla": { name: "Full SLA", count: 3, sla: "Full SLA for all operations" }
+            },
+            "tiers": {
+                "free": { 
+                    "maxStorage": 0.050, 
+                    "maxIndexes": 3, 
+                    "vectorStorage": 0.5, 
+                    "maxPartitions": 1,
+                    "maxReplicas": 1,
+                    "minReplicasSLA": "N/A",
+                    "cost": 0,
+                    "label": "FREE",
+                    "aiSupport": false
+                },
+                "basic": { 
+                    "maxStorage": 15, 
+                    "maxIndexes": 15, 
+                    "vectorStorage": 5, 
+                    "maxPartitions": 3,
+                    "maxReplicas": 3,
+                    "minReplicasSLA": 2,
+                    "costPerUnit": 73.73,
+                    "label": "BASIC",
+                    "aiSupport": true
+                },
+                "s1": { 
+                    "maxStorage": 160, 
+                    "maxIndexes": 50, 
+                    "vectorStorage": 35, 
+                    "maxPartitions": 12,
+                    "maxReplicas": 12,
+                    "minReplicasSLA": 3,
+                    "costPerUnit": 245.28,
+                    "label": "S1",
+                    "aiSupport": true
+                },
+                "s2": { 
+                    "maxStorage": 512, 
+                    "maxIndexes": 200, 
+                    "vectorStorage": 150, 
+                    "maxPartitions": 12,
+                    "maxReplicas": 12,
+                    "minReplicasSLA": 3,
+                    "costPerUnit": 981.12,
+                    "label": "S2",
+                    "aiSupport": true
+                },
+                "s3": { 
+                    "maxStorage": 1024, 
+                    "maxIndexes": 200, 
+                    "vectorStorage": 300, 
+                    "maxPartitions": 12,
+                    "maxReplicas": 12,
+                    "minReplicasSLA": 3,
+                    "costPerUnit": 1962.24,
+                    "label": "S3",
+                    "aiSupport": true
+                },
+                "l1": { 
+                    "maxStorage": 2048, 
+                    "maxIndexes": 10, 
+                    "vectorStorage": 150, 
+                    "maxPartitions": 12,
+                    "maxReplicas": 12,
+                    "minReplicasSLA": 3,
+                    "costPerUnit": 2802.47,
+                    "label": "L1",
+                    "aiSupport": true
+                },
+                "l2": { 
+                    "maxStorage": 4096, 
+                    "maxIndexes": 10, 
+                    "vectorStorage": 300, 
+                    "maxPartitions": 12,
+                    "maxReplicas": 12,
+                    "minReplicasSLA": 3,
+                    "costPerUnit": 5604.21,
+                    "label": "L2",
+                    "aiSupport": true
+                }
+            },
+            "standardRecommendations": [
+                "Configure replicas based on your query load requirements",
+                "Monitor storage usage and scale partitions before reaching 80% capacity",
+                "Consider implementing data lifecycle management for optimal cost efficiency",
+                "Evaluate AI features like Semantic Ranker for improved search relevance"
+            ]
+        };
+        
+        function findAppropriateTier(storage, indexes, vectorNeed, replicaConfig) {
+            const tiers = config.tiers;
+            const tierKeys = Object.keys(tiers);
+            const warnings = [];
+            let calculationDetails = [];
+            
+            const replicaInfo = config.replicaConfigs[replicaConfig];
+            
+            if (storage <= tiers.free.maxStorage && indexes <= tiers.free.maxIndexes && vectorNeed === 0) {
+                calculationDetails.push(`Free tier selected: ${storage}GB ≤ ${tiers.free.maxStorage}GB, ${indexes} indexes ≤ ${tiers.free.maxIndexes}, no vector search required`);
+                calculationDetails.push(`Free tier has fixed 1 replica configuration`);
+                return { 
+                    tier: 'free', 
+                    partitions: 1, 
+                    replicas: 1, 
+                    warnings: [], 
+                    calculationDetails
+                };
+            }
+            
+            for (let i = 1; i < tierKeys.length; i++) {
+                const tierKey = tierKeys[i];
+                const tierInfo = tiers[tierKey];
+                
+                const requiredPartitions = Math.ceil(storage / tierInfo.maxStorage);
+                
+                calculationDetails.push(`${tierInfo.label} tier calculation:`);
+                calculationDetails.push(`- Storage per partition: ${tierInfo.maxStorage}GB`);
+                calculationDetails.push(`- Required partitions: ${storage}GB ÷ ${tierInfo.maxStorage}GB = ${requiredPartitions}`);
+                calculationDetails.push(`- Maximum allowed partitions: ${tierInfo.maxPartitions}`);
+                
+                const storageOk = requiredPartitions <= tierInfo.maxPartitions;
+                const indexesOk = indexes <= tierInfo.maxIndexes;
+                const vectorOk = vectorNeed <= tierInfo.vectorStorage;
+                
+                if (storageOk && indexesOk && vectorOk) {
+                    calculationDetails.push(`✓ ${tierInfo.label} tier is suitable (requires ${requiredPartitions} partitions)`);
+                    
+                    let replicas = replicaInfo.count;
+                    
+                    if (tierKey === 'free') {
+                        replicas = 1;
+                    }
+                    
+                    const slaWarning = replicas < tierInfo.minReplicasSLA && tierInfo.minReplicasSLA !== "N/A";
+                    if (slaWarning) {
+                        warnings.push(`Selected replica count (${replicas}) is below the recommended minimum (${tierInfo.minReplicasSLA}) for SLA compliance.`);
+                    }
+                    
+                    calculationDetails.push(`- Using ${replicas} replicas based on "${replicaInfo.name}" configuration`);
+                    calculationDetails.push(`- SLA Status: ${replicaInfo.sla}`);
+                    
+                    return {
+                        tier: tierKey,
+                        partitions: requiredPartitions,
+                        replicas: replicas,
+                        warnings: warnings,
+                        calculationDetails
+                    };
+                } else {
+                    const reasons = [];
+                    if (!storageOk) reasons.push(`partitions needed (${requiredPartitions}) exceeds limit (${tierInfo.maxPartitions})`);
+                    if (!indexesOk) reasons.push(`indexes (${indexes}) exceeds limit (${tierInfo.maxIndexes})`);
+                    if (!vectorOk) reasons.push(`vector storage (${vectorNeed}GB) exceeds limit (${tierInfo.vectorStorage}GB)`);
+                    
+                    calculationDetails.push(`✗ ${tierInfo.label} tier is not suitable: ${reasons.join(', ')}`);
+                }
+            }
+            
+            const highestTier = tierKeys[tierKeys.length - 1];
+            const highestTierInfo = tiers[highestTier];
+            const requiredPartitions = Math.ceil(storage / highestTierInfo.maxStorage);
+            
+            calculationDetails.push(`No tier can fully accommodate these requirements.`);
+            calculationDetails.push(`Recommending ${highestTierInfo.label} tier with warnings.`);
+            
+            if (requiredPartitions > highestTierInfo.maxPartitions) {
+                warnings.push(`Storage requirement (${storage}GB) exceeds capacity of ${highestTierInfo.label} tier (${highestTierInfo.maxStorage * highestTierInfo.maxPartitions}GB)`);
+            }
+            if (indexes > highestTierInfo.maxIndexes) {
+                warnings.push(`Index requirement (${indexes}) exceeds maximum tier limit (${highestTierInfo.maxIndexes})`);
+            }
+            if (vectorNeed > highestTierInfo.vectorStorage) {
+                warnings.push(`Vector storage requirement (${vectorNeed}GB) exceeds maximum tier limit (${highestTierInfo.vectorStorage}GB)`);
+            }
+            warnings.push("Consider splitting across multiple search services.");
+            
+            return {
+                tier: highestTier,
+                partitions: Math.min(requiredPartitions, highestTierInfo.maxPartitions),
+                replicas: replicaInfo.count,
+                warnings,
+                calculationDetails
+            };
+        }
+
+        function calculateSemanticCost(requests) {
+            return Math.max(0, (requests - 1000) * 0.001);
+        }
+        
+        function generateRecommendation() {
+            const storage = parseFloat(document.getElementById('storage').value) || 0;
+            const indexes = parseInt(document.getElementById('indexes').value) || 0;
+            const vectorSearch = document.getElementById('vectorSearch').value;
+            const vectorNeed = config.vectorOptions[vectorSearch];
+            
+            const replicaConfig = document.querySelector('input[name="replicaConfig"]:checked').value;
+            
+            if (storage <= 0 || indexes <= 0 || isNaN(storage) || isNaN(indexes)) {
+                document.getElementById('result').style.display = 'block';
+                document.getElementById('tierRecommendation').innerHTML = `
+                    <p class="warning">Please enter valid positive values for storage and indexes.</p>
+                `;
+                return;
+            }
+            
+            const recommendation = findAppropriateTier(storage, indexes, vectorNeed, replicaConfig);
+            const tierInfo = config.tiers[recommendation.tier];
+            
+            const units = recommendation.partitions * recommendation.replicas;
+            const baseMonthlyCost = recommendation.tier === 'free' ? 0 : parseFloat((tierInfo.costPerUnit * units).toFixed(2));
+            
+            // Calculate AI features cost
+            let totalAICost = 0;
+            let aiCostDetails = [];
+            
+            if (document.getElementById('semantic-ranker').checked) {
+                const requests = parseInt(document.getElementById('semanticRequests').value) || 0;
+                const semanticCost = calculateSemanticCost(requests);
+                totalAICost += semanticCost;
+                aiCostDetails.push(`Semantic Ranker: ${requests.toLocaleString()} requests/month = $${semanticCost.toFixed(2)}/month`);
+            }
+
+            const totalMonthlyCost = baseMonthlyCost + totalAICost;
+
+            // Check if AI features are supported
+            const aiFeatureWarnings = [];
+            if (!tierInfo.aiSupport && totalAICost > 0) {
+                aiFeatureWarnings.push("AI features are not available on Free tier. Consider Basic or higher tier.");
+            }
+            
+            document.getElementById('result').style.display = 'block';
+            
+            document.getElementById('tierRecommendation').innerHTML = `
+                <div class="recommendation">
+                    <p><strong>Tier:</strong> ${tierInfo.label}</p>
+                    <p><strong>Partitions:</strong> ${recommendation.partitions}</p>
+                    <p><strong>Replicas:</strong> ${recommendation.replicas}</p>
+                    <p><strong>Search Units:</strong> ${units}</p>
+                    <p><strong>Base Monthly Cost:</strong> $${baseMonthlyCost.toFixed(2)} USD</p>
+                    ${totalAICost > 0 ? `<p><strong>AI Features Cost:</strong> $${totalAICost.toFixed(2)} USD</p>` : ''}
+                    <p><strong>Total Monthly Cost:</strong> $${totalMonthlyCost.toFixed(2)} USD</p>
+                    ${aiFeatureWarnings.length > 0 ? `<p class="warning">${aiFeatureWarnings[0]}</p>` : ''}
+                </div>
+            `;
+            
+            document.getElementById('calculationDetail').innerHTML = `${recommendation.calculationDetails.join('\n')}`;
+            
+            // Show AI features cost breakdown if applicable
+            if (aiCostDetails.length > 0) {
+                document.getElementById('aiFeaturesCost').innerHTML = `
+                    <div class="recommendation">
+                        <h4>AI Features Breakdown:</h4>
+                        ${aiCostDetails.map(detail => `<p>• ${detail}</p>`).join('')}
+                        <p><strong>Total AI Features Cost: $${totalAICost.toFixed(2)}/month</strong></p>
+                    </div>
+                `;
+                document.getElementById('aiFeaturesCostCard').style.display = 'block';
+            } else {
+                document.getElementById('aiFeaturesCostCard').style.display = 'none';
+            }
+            
+            if (recommendation.tier !== 'free') {
+                const replicaOptionsHtml = `
+                    <p>Compare how different replica configurations affect cost and SLA for ${tierInfo.label} tier:</p>
+                    <table class="replica-table">
+                        <tr>
+                            <th>Configuration</th>
+                            <th>Replicas</th>
+                            <th>Search Units</th>
+                            <th>Monthly Cost</th>
+                            <th>SLA Coverage</th>
+                        </tr>
+                        ${Object.values(config.replicaConfigs).map(option => {
+                            const optionUnits = recommendation.partitions * option.count;
+                            const optionCost = parseFloat((tierInfo.costPerUnit * optionUnits).toFixed(2));
+                            return `
+                                <tr ${option.count === recommendation.replicas ? 'style="background-color:#e8f5e9;"' : ''}>
+                                    <td>${option.name}</td>
+                                    <td>${option.count}</td>
+                                    <td>${optionUnits}</td>
+                                    <td>$${optionCost.toFixed(2)}</td>
+                                    <td>${option.sla}</td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </table>
+                    <p class="info">Your selected configuration is highlighted in green.</p>
+                `;
+                document.getElementById('replicaOptions').innerHTML = replicaOptionsHtml;
+                document.getElementById('replicaOptionsCard').style.display = 'block';
+            } else {
+                document.getElementById('replicaOptionsCard').style.display = 'none';
+            }
+            
+            document.getElementById('scalingAdvice').innerHTML = `
+                <div class="recommendation">
+                    <p><strong>Maximum storage per partition:</strong> ${tierInfo.maxStorage} GB</p>
+                    <p><strong>Maximum indexes supported:</strong> ${tierInfo.maxIndexes}</p>
+                    <p><strong>Vector storage per partition:</strong> ${tierInfo.vectorStorage} GB</p>
+                </div>
+            `;
+            
+            let adviceHtml = '<ul class="recommendation">';
+            
+            config.standardRecommendations.forEach(rec => {
+                adviceHtml += `<li>${rec}</li>`;
+            });
+            
+            if (recommendation.warnings.length > 0) {
+                adviceHtml += '<li class="warning">' + recommendation.warnings.join('</li><li class="warning">') + '</li>';
+            }
+            
+            adviceHtml += '</ul>';
+            document.getElementById('additionalAdvice').innerHTML = adviceHtml;
+            
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
